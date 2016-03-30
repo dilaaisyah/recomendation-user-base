@@ -62,8 +62,8 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h4><a href="blog-post.html">{{ $post->title }}</a></h4>
-                                <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="blog.html">{{ $post->wisata_type }}</a>
+                                <h4><a href="{!! url('blog/' . $post->slug) !!}">{{ $post->title }}</a></h4>
+                                <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="{!! url('blogs/category?category='. $post->wisata_type ) !!}">{{ $post->wisata_type }}</a>
                                 </p>
                                 <p class="intro">{!! strip_tags($post->summary) !!}</p>
                                 <p class="read-more">
@@ -108,8 +108,8 @@
                             </div>
                         </div>
                         <div class="content">
-                            <h4><a href="blog-post.html">{{ $post->title }}</a></h4>
-                            <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="blog.html">{{ $post->wisata_type }}</a>
+                            <h4><a href="{!! url('blog/' . $post->slug) !!}">{{ $post->title }}</a></h4>
+                            <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="{!! url('blogs/category?category='. $post->wisata_type ) !!}">{{ $post->wisata_type }}</a>
                             </p>
                             <p class="intro">{!! strip_tags($post->summary) !!}</p>
                             <p class="read-more">
@@ -153,8 +153,8 @@
                             </div>
                         </div>
                         <div class="content">
-                            <h4><a href="blog-post.html">{{ $post->title }}</a></h4>
-                            <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="blog.html">{{ $post->wisata_type }}</a>
+                            <h4><a href="{!! url('blog/' . $post->slug) !!}">{{ $post->title }}</a></h4>
+                            <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="{!! url('blogs/category?category='. $post->wisata_type ) !!}">{{ $post->wisata_type }}</a>
                             </p>
                             <p class="intro">{!! strip_tags($post->summary) !!}</p>
                             <p class="read-more">

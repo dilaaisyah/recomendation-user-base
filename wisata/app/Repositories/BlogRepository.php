@@ -239,7 +239,7 @@ class BlogRepository extends BaseRepository {
      * @param  string  $slug
      * @return array
      */
-    public function show($slug)
+    public function show($slug, $user_id = '')
     {
         $post = $this->model->with('user', 'tags')->whereSlug($slug)->firstOrFail();
 
@@ -251,7 +251,14 @@ class BlogRepository extends BaseRepository {
                 })
                 ->get();
 
-        return compact('post', 'comments');
+        if($user_id != ''){
+            $vote = $this->vote
+                         ->where('post_id', $post->id)
+                         ->where('user_id', $user_id)
+                         ->first();
+        }else { $vote = ''; }
+
+        return compact('post', 'comments', 'vote');
     }
 
     /**

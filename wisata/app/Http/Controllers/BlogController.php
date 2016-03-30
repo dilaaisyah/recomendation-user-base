@@ -45,7 +45,7 @@ class BlogController extends Controller {
 		$this->blog_gestion = $blog_gestion;
 		$this->nbrPages = 12;
 
-		$this->middleware('redac', ['except' => ['indexFront', 'show', 'tag', 'search']]);
+		$this->middleware('redac', ['except' => ['indexFront', 'show', 'tag', 'search', 'category']]);
 		$this->middleware('admin', ['only' => 'updateSeen']);
 		$this->middleware('ajax', ['only' => ['updateSeen', 'updateActive', 'updateVote']]);
 	}	
@@ -152,7 +152,10 @@ class BlogController extends Controller {
 	{
 		$user = $auth->user();
 
-		return view('front.blog.show',  array_merge($this->blog_gestion->show($slug), compact('user')));
+		if ($user) $user_id = $user->id;
+		else $user_id = '';
+
+		return view('front.blog.show',  array_merge($this->blog_gestion->show($slug, $user_id), compact('user')));
 	}
 
 	/**

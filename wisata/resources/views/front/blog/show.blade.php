@@ -75,16 +75,22 @@
                         <h4 class="text-uppercase vote-label">Leave Vote</h4>
                         <div class="stars">
                             <input type="hidden" name="post_id" value="{!! $post->id !!}">
-                            <input type="radio" name="star" class="star-1 star" id="star-1" value="1">
-                            <label class="star-1" for="star-1">1</label>
-                            <input type="radio" name="star" class="star-2 star" id="star-2" value="2">
-                            <label class="star-2" for="star-2">2</label>
-                            <input type="radio" name="star" class="star-3 star" id="star-3" value="3">
-                            <label class="star-3" for="star-3">3</label>
-                            <input type="radio" name="star" class="star-4 star" id="star-4" value="4">
-                            <label class="star-4" for="star-4">4</label>
-                            <input type="radio" name="star" class="star-5 star" id="star-5" value="5">
-                            <label class="star-5" for="star-5">5</label>
+                            @if($vote)
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if($vote->vote == $i)
+                                        <input type="radio" name="star" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}" checked="checked">
+                                        <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
+                                    @else    
+                                        <input type="radio" name="star" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}">
+                                        <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
+                                    @endif
+                                @endfor
+                            @else
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <input type="radio" name="star" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}">
+                                    <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
+                                @endfor
+                            @endif
                             <span></span>
                             {!! Form::token() !!}
                         </div>
