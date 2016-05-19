@@ -25,7 +25,11 @@
 	                <div class="col-md-6 clearfix">
 
 	                	<div class="box">
-		                	<p class="lead">To log on this site you must fill this form :</p>				
+		                	<p class="lead">To log on this site you must fill this form :</p>	
+
+		                	@if(session()->has('error'))
+								@include('partials/error', ['type' => 'danger', 'message' => session('error')])
+							@endif			
 					
 							{!! Form::open(['url' => 'auth/login', 'method' => 'post', 'role' => 'form']) !!}	
 							
@@ -62,4 +66,3 @@
 	</div>
 	<!-- /#content -->
 @stop
-
