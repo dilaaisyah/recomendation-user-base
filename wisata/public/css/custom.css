@@ -75,3 +75,33 @@
   -o-transition: -o-width 0.5s;
   transition: width 0.5s;
 }
+
+/* footer */
+.foo-share li {
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+  vertical-align: top;
+  margin: 5px 5px 5px 0;
+}
+.foo-share a {
+  color: #83888e;
+}
+.foo-share a:hover {
+  color: white;
+}
+.foo-share .fa {
+  font-size: 30px;
+  width: 55px;
+  height: 55px;
+  padding: 2px;
+  vertical-align: middle;
+  line-height: 50px;
+  text-align: center;
+  border: 1px solid;
+  border-radius: 100%;
+  -moz-border-radius: 100%;
+  -webkit-border-radius: 100%;
+}

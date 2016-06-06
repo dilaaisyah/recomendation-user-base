@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+	
+use Illuminate\Contracts\Auth\Guard;
 use App\Repositories\BlogRepository;
 use App\Repositories\SliderRepository;
 use App\Jobs\ChangeLocale;
@@ -41,12 +42,33 @@ class HomeController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index(
+		Guard $auth)
 	{
-		$recomended = $this->blog_gestion->recent(6);
 		$popular = $this->blog_gestion->popular(6);
 		$recent = $this->blog_gestion->recent(6);
 		$ads = $this->slider_gestion->indexFront(5);
+
+		$user = $auth->user();
+		if ($user) $user_id = $user->id;
+		else $user_id = '';
+
+		if($user_id){
+			$voted_posts = $this->blog_gestion->get_voted_posts();
+			$formated = array();
+			foreach ($voted_posts as $value) {
+				if(array_key_exists($value->user_id, $formated)) {
+	            	$formated[$value->user_id][$value->post_id] = $value->vote;
+	            }else{
+	            	$formated[$value->user_id] = array($value->post_id=>$value->vote);
+	            }
+			}
+			$ranks = $this->blog_gestion->getRecommendations($formated, $user_id);
+			
+			$recomended = $this->blog_gestion->getRecommendationsPost($ranks, 6);
+		}else{
+			$recomended = '';
+		}
 
 		return view('front.index', compact('recomended', 'popular', 'recent', 'ads'));
 	}

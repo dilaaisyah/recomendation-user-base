@@ -233,6 +233,110 @@ class BlogRepository extends BaseRepository {
         return $query->paginate($n);
     }
 
+
+    public function get_voted_posts()
+    {
+        $query = $this->vote
+                ->selectRaw('post_vote. *')
+                ->join('posts', 'posts.id', '=', 'post_id')
+                ->get();
+
+        return $query;
+    }
+
+    public function getRecommendations($preferences, $person)
+    {
+        $total = array();
+        $simSums = array();
+        $ranks = array();
+        $sim = 0;
+
+        // echo "<pre>";print_r($preferences);echo "</pre>";
+        
+        foreach($preferences as $otherPerson=>$values){
+            if($otherPerson != $person){
+                $sim = $this->similarityDistance($preferences, $person, $otherPerson);
+            }
+            
+            if($sim > 0){
+                foreach($preferences[$otherPerson] as $key=>$value){
+                    if(!array_key_exists($key, $preferences[$person])){
+                        if(!array_key_exists($key, $total)) {
+                            $total[$key] = 0;
+                        }
+                        // echo "rating ".$key."= ".$preferences[$otherPerson][$key]." ";
+                        $total[$key] += $preferences[$otherPerson][$key] * $sim;
+                        // echo "total= ".$total[$key]." ";
+                        if(!array_key_exists($key, $simSums)){
+                            $simSums[$key] = 0;
+                        }
+                        $simSums[$key] += $sim;
+                        // echo "simsum= ".$sim."<br>";
+                    }
+                }    
+            }
+        }
+        foreach($total as $key=>$value){
+            $ranks[$key] = $value / $simSums[$key];
+            // echo "rank= ".$ranks[$key]." ";
+        }    
+        arsort($ranks);
+        return $ranks;
+    }
+
+    public function similarityDistance($preferences, $person1, $person2)
+    {
+        $similar = array();
+        $sum = 0;
+        
+        // echo "<br><br>".$person1.' '.$person2;
+        // echo "<br>"; 
+
+        foreach($preferences[$person1] as $key=>$value){
+            if(array_key_exists($key, $preferences[$person2]))
+                $similar[$key] = 1;
+        }
+
+        // echo "<pre>";print_r($similar);echo "</pre>";
+        // echo "<br>"; 
+        
+        if(count($similar) == 0){
+            return 0;
+        }
+        
+        foreach($preferences[$person1] as $key=>$value){
+            if(array_key_exists($key, $preferences[$person2])){
+                // echo 'key '.$key.' '.$person1.'= '.$value.' '.$person2.'= '.$preferences[$person2][$key].'<br>';
+                $sum = $sum + pow($value - $preferences[$person2][$key], 2);
+            }
+        }
+
+        $result = 1/(1 + sqrt($sum));
+
+        // echo "sum= ".$sum." result= ".$result."<br><br>";
+        
+        return  $result;     
+    }
+
+
+    public function getRecommendationsPost($ranks_result, $n)
+    {   
+        $post_id = '';
+        foreach ($ranks_result as $key => $value) {
+            $post_id .= $key."  ,";
+        }
+        $post_id = substr($post_id, 0, -1);
+        
+        $query = $this->model
+                ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary', 'thumbnail', 'wisata_type', 'vote')
+                        ->whereRaw("id IN ($post_id)")
+                        ->whereActive(true)
+                        ->orderByRaw("FIELD(id , $post_id) ASC")
+                        ->with('user');
+
+        return $query->paginate($n);
+    }
+
     /**
      * Get post collection.
      *
