@@ -327,6 +327,7 @@ class BlogRepository extends BaseRepository {
         }
         $post_id = substr($post_id, 0, -1);
         
+        if($post_id){
         $query = $this->model
                 ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary', 'thumbnail', 'wisata_type', 'vote')
                         ->whereRaw("id IN ($post_id)")
@@ -335,6 +336,7 @@ class BlogRepository extends BaseRepository {
                         ->with('user');
 
         return $query->paginate($n);
+        }else return false;
     }
 
     /**

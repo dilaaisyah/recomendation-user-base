@@ -63,9 +63,13 @@ class HomeController extends Controller
 	            	$formated[$value->user_id] = array($value->post_id=>$value->vote);
 	            }
 			}
-			$ranks = $this->blog_gestion->getRecommendations($formated, $user_id);
+			if(array_key_exists($user_id, $formated)){
+				$ranks = $this->blog_gestion->getRecommendations($formated, $user_id);
 			
-			$recomended = $this->blog_gestion->getRecommendationsPost($ranks, 6);
+				$result_recomend = $this->blog_gestion->getRecommendationsPost($ranks, 6);
+				if($result_recomend) $recomended = $result_recomend;
+				else $recomended = ''; 
+			}else $recomended = '';
 		}else{
 			$recomended = '';
 		}
