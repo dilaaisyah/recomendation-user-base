@@ -68,7 +68,7 @@
 								{!! Form::submit(trans('front/form.send'), ['col-lg-12']) !!}
 							{!! Form::close() !!}
 						@else
-							<div class="text-center"><i class="text-center">{{ trans('front/blog.info-comment') }}</i></div>
+							<div class="text-center info-comment"><i class="text-center">{{ trans('front/blog.info-comment') }}</i></div>
 						@endif
 					</div>
 

@@ -33,7 +33,7 @@ Route::group(['middleware' => ['web']], function () {
 
 	Route::put('postseen/{id}', 'BlogController@updateSeen');
 	Route::put('postactive/{id}', 'BlogController@updateActive');
-	Route::put('postvote/{id}', 'BlogController@updateVote');
+	Route::put('postvote/{id}', 'VoteController@updateVote');
 
 	Route::resource('blog', 'BlogController');
 

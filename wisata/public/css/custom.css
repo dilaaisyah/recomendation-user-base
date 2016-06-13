@@ -18,6 +18,7 @@
 
 /*blog post*/
 #blog-post .author{ color: #38a7bb; }
+#blog-post .info-comment { margin-bottom: 60px; }
 
 /*star vote*/
 .vote-label{

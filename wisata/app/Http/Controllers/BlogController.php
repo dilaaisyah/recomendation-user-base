@@ -47,7 +47,7 @@ class BlogController extends Controller {
 
 		$this->middleware('redac', ['except' => ['indexFront', 'show', 'tag', 'search', 'category']]);
 		$this->middleware('admin', ['only' => 'updateSeen']);
-		$this->middleware('ajax', ['only' => ['updateSeen', 'updateActive', 'updateVote']]);
+		$this->middleware('ajax', ['only' => ['updateSeen', 'updateActive']]);
 	}	
 
 	/**
@@ -241,14 +241,14 @@ class BlogController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function updateVote(
-		Request $request,
-		$id)
-	{		
-		$this->blog_gestion->updateVote($request->all(), $id, $request->user()->id);
+	// public function updateVote(
+	// 	Request $request,
+	// 	$id)
+	// {		
+	// 	$this->blog_gestion->updateVote($request->all(), $id, $request->user()->id);
 
-		return response()->json();
-	}
+	// 	return response()->json();
+	// }
 
 	/**
 	 * Remove the specified resource from storage.
