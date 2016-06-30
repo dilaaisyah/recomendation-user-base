@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jun 10, 2016 at 03:23 PM
+-- Generation Time: Jun 30, 2016 at 03:28 AM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -11,7 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `wisata`
+-- Database: `dila_wisata`
 --
 
 -- --------------------------------------------------------
@@ -180,7 +180,7 @@ CREATE TABLE `post_vote` (
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `vote` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `post_vote`
@@ -188,10 +188,17 @@ CREATE TABLE `post_vote` (
 
 INSERT INTO `post_vote` (`id`, `post_id`, `user_id`, `vote`) VALUES
 (1, 3, 1, 5),
-(2, 8, 1, 1),
-(12, 8, 2, 3),
-(13, 1, 1, 2),
-(14, 4, 1, 5);
+(2, 8, 1, 3),
+(12, 8, 2, 1),
+(13, 1, 1, 3),
+(14, 4, 1, 5),
+(15, 1, 2, 1),
+(16, 2, 3, 2),
+(17, 2, 1, 1),
+(18, 2, 2, 1),
+(19, 2, 5, 1),
+(20, 8, 5, 5),
+(21, 8, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -292,11 +299,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role_id`, `seen`, `valid`, `confirmed`, `confirmation_code`, `created_at`, `updated_at`, `remember_token`) VALUES
-(1, 'GreatAdmin', 'admin@la.fr', '$2y$10$l8EYCuAr4t5F/QNNr5NTxOIW.AfZL9zggwZb5VFXdJGP92Hl312dO', 1, 1, 1, 1, NULL, '2016-03-13 03:14:44', '2016-06-10 06:01:01', 'lMfcwI2oT4GZQDlWRQR0qJevk2WiypWX1PJQonrwFGsO7lhe1ztb3OF4C9K0'),
-(2, 'GreatRedactor', 'redac@la.fr', '$2y$10$ygjhkR2ApavKRjKWvlzGPOcgwkMLKSl0N.SOUK9TFAHhYlX6lhRg2', 2, 1, 1, 1, NULL, '2016-03-13 03:14:44', '2016-06-10 06:01:57', 'p1zxOxdJfVthUaVOO5JaC47ZfVqlxAlivOwunnRXmkhvz9VgkaiLL4UHqrHg'),
-(3, 'Walker', 'walker@la.fr', '$2y$10$YaF1ozDqL6Snjh7B2f/bEeOHM6maccvhC6fUp9Yh7lH/oEFBmm.je', 3, 0, 0, 1, NULL, '2016-03-13 03:14:44', '2016-06-10 06:03:11', 'Pcm00MPbmXuWbKGNFNpTVP3pRN3BKZQcI7EJQnYqQcrEv6SAlHBF6sGJV252'),
+(1, 'GreatAdmin', 'admin@la.fr', '$2y$10$l8EYCuAr4t5F/QNNr5NTxOIW.AfZL9zggwZb5VFXdJGP92Hl312dO', 1, 1, 1, 1, NULL, '2016-03-13 03:14:44', '2016-06-13 04:23:37', 'Z1Fg6KecuOL3dmxpcdt6o3A3Lz1TkeJ3jZdHouEuBB7UrqrLuhubqTYus8a0'),
+(2, 'GreatRedactor', 'redac@la.fr', '$2y$10$ygjhkR2ApavKRjKWvlzGPOcgwkMLKSl0N.SOUK9TFAHhYlX6lhRg2', 2, 1, 1, 1, NULL, '2016-03-13 03:14:44', '2016-06-13 04:23:57', 'ZA4UUwnWLizYrL3G571LehIhYQyUCEcAtskhmWJxGmOiKYtkM13xmbTOyWl5'),
+(3, 'Walker', 'walker@la.fr', '$2y$10$YaF1ozDqL6Snjh7B2f/bEeOHM6maccvhC6fUp9Yh7lH/oEFBmm.je', 3, 0, 0, 1, NULL, '2016-03-13 03:14:44', '2016-06-13 03:42:32', '5iNmk1tmrMBU4Dn6vgv4gWlov97T5K2ZJUfi5wkUu68yJAzVTFzj3VkZdUQh'),
 (4, 'Slacker', 'slacker@la.fr', '$2y$10$hHPRyWYt9r.ApfXRHXve7uRxGxuK7Qrd/nXn4Ep7q38PxIGjTK2ia', 3, 1, 0, 0, NULL, '2016-03-13 03:14:45', '2016-03-13 03:18:03', NULL),
-(5, 'dila', 'dzylar@gmail.com', '$2y$10$koKhGVwt/iB3PUdQrLo.OuzKw2G.nmqSs4ZCyTxOSYa9IfgYLS22q', 3, 0, 0, 1, NULL, '2016-05-19 07:18:20', '2016-05-19 07:21:56', 'CpFGWfGrKtwq6MdAKevJdAEHHO9mVsbYgDq2GeseWLpEcZmv11fvmH6fFEMi'),
+(5, 'dila', 'dzylar@gmail.com', '$2y$10$mnP8Dblm8hagjWfSlsatu.T5MygpmDKN5RpijEgI367JMCVJHnI46', 3, 0, 0, 1, NULL, '2016-05-19 07:18:20', '2016-06-13 04:22:44', 'cY9nLbOSKGhhrwYs2a9KbzYtf7q0gokGaQUUiJMYR78T6PFSbphneddnP3o8'),
 (6, 'choirul', 'choimuhtadin@gmail.com', '$2y$10$mnP8Dblm8hagjWfSlsatu.T5MygpmDKN5RpijEgI367JMCVJHnI46', 3, 0, 0, 0, 'IqSYLGm3uuTMlcGgycAaOj8kTYNvys', '2016-05-19 07:22:20', '2016-05-19 07:22:20', NULL);
 
 --
@@ -402,7 +409,7 @@ ALTER TABLE `post_tag`
 -- AUTO_INCREMENT for table `post_vote`
 --
 ALTER TABLE `post_vote`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `roles`
 --
