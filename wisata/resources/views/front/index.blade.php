@@ -32,7 +32,7 @@
 
 <!-- *** BLOG HOMEPAGE *** -->
 <section class="bar background-white no-mb">
-    <div class="container">
+    <div class="container recomended">
         @if(session('statut') != 'visitor') 
             @if($recomended)
             <div class="col-md-12">
@@ -65,6 +65,26 @@
                                 <h4><a href="{!! url('blog/' . $post->slug) !!}">{{ $post->title }}</a></h4>
                                 <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="{!! url('blogs/category?category='. $post->wisata_type ) !!}">{{ $post->wisata_type }}</a>
                                 </p>
+                                <div class="stars">
+                                    @if($post->vote)
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if($post->vote == $i)
+                                                <input type="radio" name="star-{{$post->id}}" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}" checked="checked">
+                                                <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
+                                            @else    
+                                                <input type="radio" name="star-{{$post->id}}" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}">
+                                                <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
+                                            @endif
+                                        @endfor
+                                    @else
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <input type="radio" name="star-{{$post->id}}" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}">
+                                            <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
+                                        @endfor
+                                    @endif
+                                    <span></span>
+                                    {!! Form::token() !!}
+                                </div>
                                 <p class="intro">{!! strip_tags($post->summary) !!}</p>
                                 <p class="read-more">
                                     {!! link_to('blog/' . $post->slug, 'Continue reading', ['class' => 'btn btn-template-main']) !!}

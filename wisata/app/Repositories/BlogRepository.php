@@ -105,7 +105,7 @@ class BlogRepository extends BaseRepository {
     private function queryActiveWithUserOrderByDate()
     {
         return $this->model
-            ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary', 'thumbnail', 'wisata_type', 'vote')
+            ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary', 'thumbnail', 'wisata_type')
                         ->whereActive(true)
                         ->with('user')
                         ->latest();
@@ -329,11 +329,13 @@ class BlogRepository extends BaseRepository {
         
         if($post_id){
         $query = $this->model
-                ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary', 'thumbnail', 'wisata_type', 'vote')
-                        ->whereRaw("id IN ($post_id)")
-                        ->whereActive(true)
-                        ->orderByRaw("FIELD(id , $post_id) ASC")
-                        ->with('user');
+                ->selectRaw('posts.id as id, created_at, updated_at, title, slug, posts.user_id as user_id, summary, thumbnail, wisata_type, round(avg(post_vote.vote)) as vote')
+                ->join('post_vote', 'post_id', '=', 'posts.id')
+                ->whereRaw("posts.id IN ($post_id)")
+                ->whereActive(true)
+                ->groupBy('posts.id')
+                ->orderByRaw("FIELD(posts.id , $post_id) ASC")
+                ->with('user');
 
         return $query->paginate($n);
         }else return false;
