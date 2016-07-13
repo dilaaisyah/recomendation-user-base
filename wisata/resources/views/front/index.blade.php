@@ -70,16 +70,13 @@
                                         @for ($i = 1; $i <= 5; $i++)
                                             @if($post->vote == $i)
                                                 <input type="radio" name="star-{{$post->id}}" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}" checked="checked">
-                                                <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
                                             @else    
                                                 <input type="radio" name="star-{{$post->id}}" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}">
-                                                <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
                                             @endif
                                         @endfor
                                     @else
                                         @for ($i = 1; $i <= 5; $i++)
                                             <input type="radio" name="star-{{$post->id}}" class="star-{!! $i !!} star" id="star-{!! $i !!}" value="{!! $i !!}">
-                                            <label class="star-{!! $i !!}" for="star-{!! $i !!}">{!! $i !!}</label>
                                         @endfor
                                     @endif
                                     <span></span>
