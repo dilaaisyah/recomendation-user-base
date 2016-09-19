@@ -154,8 +154,9 @@ class BlogController extends Controller {
 
 		if ($user) $user_id = $user->id;
 		else $user_id = '';
+		$get_tags = $this->blog_gestion->get_tags();
 
-		return view('front.blog.show',  array_merge($this->blog_gestion->show($slug, $user_id), compact('user')));
+		return view('front.blog.show',  array_merge($this->blog_gestion->show($slug, $user_id), compact('user', 'get_tags')));
 	}
 
 	/**

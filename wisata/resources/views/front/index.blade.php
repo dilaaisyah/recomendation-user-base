@@ -2,12 +2,12 @@
 
 @section('main')
 <!-- *** HOMEPAGE CAROUSEL *** -->
+<?php if(count($ads)>0):?>
 <section>
     <div class="home-carousel">
         <div class="dark-mask"></div>
         <div class="container">
             <div class="homepage owl-carousel">
-            @if($ads)
                 @foreach($ads as $ads)
                     <div class="item">
                         <div class="row">
@@ -22,12 +22,12 @@
                         </div>
                     </div>
                 @endforeach
-            @endif
             </div>
             <!-- /.project owl-slider -->
         </div>
     </div>
 </section>
+@endif
 <!-- *** HOMEPAGE CAROUSEL END *** -->
 
 <!-- *** BLOG HOMEPAGE *** -->
@@ -97,7 +97,7 @@
             @endif
         @endif
 
-        @if($popular)
+        <?php if(count($popular)>0):?>
         <div class="col-md-12">
             <div class="heading text-center">
                 <h2>Popular Post</h2>
@@ -142,7 +142,7 @@
         </div>
         @endif
 
-        @if($recent)
+        <?php if(count($recent)>0):?>
         <div class="col-md-12">
             <div class="heading text-center">
                 <h2>Recent Post</h2>

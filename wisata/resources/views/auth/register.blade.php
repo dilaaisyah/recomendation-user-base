@@ -30,10 +30,10 @@
 							{!! Form::open(['url' => 'auth/register', 'method' => 'post', 'role' => 'form']) !!}	
 
 								<div class="row">
-									{!! Form::control('text', 12, 'username', $errors, 'Your Nickname *') !!}
-									{!! Form::control('email', 12, 'email', $errors, 'Your email *') !!}
-									{!! Form::control('password', 12, 'password', $errors, 'Your password *') !!}
-									{!! Form::control('password', 12, 'password_confirmation', $errors, 'Confirm your password') !!}
+									{!! Form::control('text', 12, 'username', $errors, 'Your Username *') !!}
+									{!! Form::control('email', 12, 'email', $errors, 'Your Email *') !!}
+									{!! Form::control('password', 12, 'password', $errors, 'Your Password *') !!}
+									{!! Form::control('password', 12, 'password_confirmation', $errors, 'Confirm Your Password') !!}
 								</div>
 
 								<div class="row">	

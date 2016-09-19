@@ -109,7 +109,9 @@
 						{!! Form::close() !!}
                     </div>
                     @else
-						<div class="text-center"><i class="text-center">{{ trans('front/blog.info-comment') }}</i></div>
+						<div class="text-center" style="padding: 50px 0px;">
+                            <i class="text-center">{{ trans('front/blog.info-comment') }}</i>
+                        </div>
 					@endif
                     <!-- /#comment-form -->
 

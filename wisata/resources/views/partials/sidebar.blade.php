@@ -25,41 +25,29 @@
 
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
-                                <li><a href="blog.html">Kuliner</a>
-                                <li><a href="blog.html">Populer</a>
-                                <li><a href="blog.html">Religi</a>
-                                <li><a href="blog.html">Alam</a>
-                                <li><a href="blog.html">Sejarah</a>
-                                </li>
+                                <li><a href="{!! url('blogs/category?category=kuliner') !!}">Kuliner</a></li>
+                                <li><a href="{!! url('blogs/category?category=populer') !!}">Populer</a></li>
+                                <li><a href="{!! url('blogs/category?category=religi') !!}">Religi</a></li>
+                                <li><a href="{!! url('blogs/category?category=alam') !!}">Alam</a></li>
+                                <li><a href="{!! url('blogs/category?category=sejarah') !!}">Sejarah</a></li>
                             </ul>
                         </div>
                     </div>
 
+                    <?php if(count($get_tags)>0):?>
                     <div class="panel sidebar-menu">
                         <div class="panel-heading">
                             <h3 class="panel-title">Tags</h3>
                         </div>
                         <div class="panel-body">
                             <ul class="tag-cloud">
-                                <li><a href="#"><i class="fa fa-tags"></i> html5</a> 
-                                </li>
-                                <li><a href="#"><i class="fa fa-tags"></i> css3</a> 
-                                </li>
-                                <li><a href="#"><i class="fa fa-tags"></i> jquery</a> 
-                                </li>
-                                <li><a href="#"><i class="fa fa-tags"></i> ajax</a> 
-                                </li>
-                                <li><a href="#"><i class="fa fa-tags"></i> php</a> 
-                                </li>
-                                <li><a href="#"><i class="fa fa-tags"></i> responsive</a> 
-                                </li>
-                                <li><a href="#"><i class="fa fa-tags"></i> visio</a> 
-                                </li>
-                                <li><a href="#"><i class="fa fa-tags"></i> bootstrap</a> 
-                                </li>
+                                @foreach($get_tags as $tag)
+                                <li><a href="{!! url('blogs/tag?tag='.$tag->id) !!}"><i class="fa fa-tags"></i> {{ $tag->tag }}</a></li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
+                    @endif
                     <!-- *** MENUS AND FILTERS END *** -->
 
                 </div>

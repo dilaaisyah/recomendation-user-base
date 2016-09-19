@@ -554,4 +554,14 @@ class BlogRepository extends BaseRepository {
         return $this->tag->findOrFail($tag_id)->tag;
     }
 
+    // get 10 tag by most used tag
+    public function get_tags(){
+        $get_tags = $this->tag
+                         ->selectRaw('id, tag, count(tag) as count')
+                         ->groupBy('tag')
+                         ->orderBy('count', 'desc');
+
+        return $get_tags->paginate(10);
+    }
+
 }
