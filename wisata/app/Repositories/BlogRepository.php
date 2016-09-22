@@ -600,40 +600,57 @@ class BlogRepository extends BaseRepository {
         
         //get similarity of post
         $sim = array();
+        // rumus: (Pi, Pj)
         // post_in = post i, post_not = post j
         foreach ($in_vote as $post_in) {
             foreach ($not_vote as $post_not) {
                 // echo 'post i= '.$post_in.' post j= '.$post_not.'<br>';
+
                 $top = 0; $bottom1 = 0; $bottom2 = 0; $bottom = 0; $similar=0;
                 foreach ($all_user as $user) {
                     $diff_i = 0; $diff_j = 0; $condition_i = false; $condition_j = false;
                     if(array_key_exists($user->id, $formated[$post_in])){
-                        // rating user in post i - rata post i
+                        // rumus: (rating i - rrt i)
+                        // rating user in post i dikurangi rata-rata post i
                         $diff_i = floatval($formated[$post_in][$user->id] - $formated[$post_in]['avg']);
                         $condition_i = true;
+                        // rumus: ∑((rating i - rrt i)^2)
+                        // hasil pengurangan rating user dan rata-rata dipangkatkan 2
                         $bottom1 += round(pow($diff_i, 2), 3);
+
                         // echo 'diff i= '.$diff_i.' pow= '.round(pow($diff_i, 2), 3);
                     }
                     if(array_key_exists($user->id, $formated[$post_not])){
-                        // rating user in post j - rata post j
+                        // rumus: (rating j - rrt j)
+                        // rating user in post j dikurangi rata-rata post j
                         $diff_j = floatval($formated[$post_not][$user->id] - $formated[$post_not]['avg']);
                         $condition_j = true;
+                        // rumus: ∑((rating j - rrt j)^2)
+                        // hasil pengurangan rating user dan rata-rata dipangkatkan 2
                         $bottom2 += round(pow($diff_j, 2), 3);
+
                         // echo 'diff j '.$diff_j.' pow= '.round(pow($diff_j, 2), 3);
                     }
+                    // rumus: ∑((rating i - rrt i)*(rating j - rrt j))
                     if($condition_i == true && $condition_j == true) $top += $diff_i*$diff_j;
                     elseif($condition_i == true && $condition_j == false) $top += $diff_i;
                     elseif($condition_i == false && $condition_j == true) $top += $diff_j;
 
                     // echo '<br>';
                 }
+
+                // rumus: √(∑((rating i - rrt i)^2))
                 $bottom1 = round(sqrt($bottom1), 3);
+                // rumus: √(∑((rating j - rrt j)^2))
                 $bottom2 = round(sqrt($bottom2), 3);
+                // rumus: √(∑((rating i - rrt i)^2)) * √(∑((rating j - rrt j)^2))
                 $bottom = ($bottom1 * $bottom2);
+                // rumus: ∑((rating i - rrt i)*(rating j - rrt j)) / √(∑((rating i - rrt i)^2)) * √(∑((rating j - rrt j)^2))
                 if($bottom != 0) $similar = round(($top / $bottom), 3); else $bottom = 0;
                 // echo 'result top= '.$top.' bottom1= '.round(sqrt($bottom1), 3).' bottom2= '.round(sqrt($bottom2), 3).' sim= '.$similar;
                 // echo '<br><br>';
 
+                // post dianggap similar jika nilai similarity lebih dari 0
                 if($similar>0) $sim[$post_not][$post_in] = $similar;
             }
         }
@@ -644,10 +661,16 @@ class BlogRepository extends BaseRepository {
         foreach ($sim as $key_not => $sim_post) {
             $up= 0; $down = 0;
             foreach ($sim_post as $key_in =>  $value) {
+                // rumus: ∑(rai * si,j)
+                // total penjumlahan rating user pada post i dikali nilai similarity
                 $up += round(($formated[$key_in][$user_id] * $value), 3);
+                // rumus: ∑(si,j)
+                // total penjumlahan nilai similarity
                 $down += $value;
             }
             // echo 'result up= '.$up.' down= '.$down;
+
+            // rumus: ∑(rai * si,j) / ∑(si,j)
             $predict[$key_not] = round(($up / $down), 3);
             // echo ' predict= '.$predict[$key_not];
         }

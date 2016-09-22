@@ -88,9 +88,11 @@ class HomeController extends Controller
 			$all_post = $this->blog_gestion->get_all_post();
 			$all_user = $this->user_gestion->get_all_user();
 			$formated = array();
+			// formating data, bentuk data berupa array 2 dimensi (berdasarkan table 3.01)
 			foreach ($all_post as $post) {
 				$count = 0; $sum = 0; $avg = 0;
 				foreach ($all_user as $user) {
+					// mendapatkan rating user pada post yang ada
 					$get_vote = $this->blog_gestion->get_vote_by($post->id, $user->id);
 					$vote = ($get_vote['vote'])?$get_vote['vote']:0;
 					if($vote!=0){ 
@@ -100,11 +102,15 @@ class HomeController extends Controller
 				}
 				if($count==0){ unset($formated[$post->id]); } 
 				else {
+					// rumus: total rating / user yang merating
+					// nila rata - rating untuk setiap post
 					$avg = round($sum/$count, 3);
 					$formated[$post->id]['avg'] = $avg;
 				}
 			}
+			// mendapatkan semua recomendasi post
 			$ranks = $this->blog_gestion->recommendations($formated, $user_id, $all_user);
+			// hasil post recomendasi post diambil 6 terbesar
 			$result_recomend = $this->blog_gestion->getRecommendationsPost($ranks, 6);
 			if($result_recomend) $recomended = $result_recomend;
 			else $recomended = ''; 
