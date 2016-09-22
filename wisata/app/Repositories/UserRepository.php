@@ -215,4 +215,14 @@ class UserRepository extends BaseRepository
 		$user->save();
 	}
 
+	// get all user
+    public function get_all_user(){
+        $get_user = $this->model
+                ->select('id')
+                ->where('confirmed', 1)
+                ->orderBy('id', 'asc')
+                ->get();
+        return $get_user;
+    }
+
 }

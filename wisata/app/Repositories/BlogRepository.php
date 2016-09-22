@@ -326,7 +326,7 @@ class BlogRepository extends BaseRepository {
             $post_id .= $key."  ,";
         }
         $post_id = substr($post_id, 0, -1);
-        
+
         if($post_id){
         $query = $this->model
                 ->selectRaw('posts.id as id, created_at, updated_at, title, slug, posts.user_id as user_id, summary, thumbnail, wisata_type, round(avg(post_vote.vote)) as vote')
@@ -562,6 +562,100 @@ class BlogRepository extends BaseRepository {
                          ->orderBy('count', 'desc');
 
         return $get_tags->paginate(10);
+    }
+
+    // get all publish post
+    public function get_all_post(){
+        $get_post = $this->model
+                ->select('id')
+                ->orderBy('id', 'asc')
+                ->get();
+        return $get_post;
+    }
+
+    //get vote by post id and user id
+    public function get_vote_by($post_id, $user_id){
+        $get_vote = $this->vote
+                         ->select('vote')
+                         ->where('post_id', $post_id)
+                         ->where('user_id', $user_id);
+        return $get_vote->first();
+    }
+
+    // get recomendations
+    public function recommendations($formated, $user_id, $all_user){
+        // echo "<pre>";print_r($formated);echo "</pre>";
+        
+        // get voted post and get not voted post
+        $not_vote = array(); $in_vote = array();
+        foreach($formated as $post_id=>$values){
+            if(array_key_exists($user_id, $formated[$post_id])){
+                $in_vote[] = $post_id;
+            }else{
+                $not_vote[] = $post_id;
+            }
+        }
+        // echo "<pre>";print_r($in_vote);echo "</pre>";
+        // echo "<pre>";print_r($not_vote);echo "</pre>";
+        
+        //get similarity of post
+        $sim = array();
+        // post_in = post i, post_not = post j
+        foreach ($in_vote as $post_in) {
+            foreach ($not_vote as $post_not) {
+                // echo 'post i= '.$post_in.' post j= '.$post_not.'<br>';
+                $top = 0; $bottom1 = 0; $bottom2 = 0; $bottom = 0; $similar=0;
+                foreach ($all_user as $user) {
+                    $diff_i = 0; $diff_j = 0; $condition_i = false; $condition_j = false;
+                    if(array_key_exists($user->id, $formated[$post_in])){
+                        // rating user in post i - rata post i
+                        $diff_i = floatval($formated[$post_in][$user->id] - $formated[$post_in]['avg']);
+                        $condition_i = true;
+                        $bottom1 += round(pow($diff_i, 2), 3);
+                        // echo 'diff i= '.$diff_i.' pow= '.round(pow($diff_i, 2), 3);
+                    }
+                    if(array_key_exists($user->id, $formated[$post_not])){
+                        // rating user in post j - rata post j
+                        $diff_j = floatval($formated[$post_not][$user->id] - $formated[$post_not]['avg']);
+                        $condition_j = true;
+                        $bottom2 += round(pow($diff_j, 2), 3);
+                        // echo 'diff j '.$diff_j.' pow= '.round(pow($diff_j, 2), 3);
+                    }
+                    if($condition_i == true && $condition_j == true) $top += $diff_i*$diff_j;
+                    elseif($condition_i == true && $condition_j == false) $top += $diff_i;
+                    elseif($condition_i == false && $condition_j == true) $top += $diff_j;
+
+                    // echo '<br>';
+                }
+                $bottom1 = round(sqrt($bottom1), 3);
+                $bottom2 = round(sqrt($bottom2), 3);
+                $bottom = ($bottom1 * $bottom2);
+                if($bottom != 0) $similar = round(($top / $bottom), 3); else $bottom = 0;
+                // echo 'result top= '.$top.' bottom1= '.round(sqrt($bottom1), 3).' bottom2= '.round(sqrt($bottom2), 3).' sim= '.$similar;
+                // echo '<br><br>';
+
+                if($similar>0) $sim[$post_not][$post_in] = $similar;
+            }
+        }
+        // echo "<pre>";print_r($sim);echo "</pre>";
+
+        // predict post
+        $predict = array();
+        foreach ($sim as $key_not => $sim_post) {
+            $up= 0; $down = 0;
+            foreach ($sim_post as $key_in =>  $value) {
+                $up += round(($formated[$key_in][$user_id] * $value), 3);
+                $down += $value;
+            }
+            // echo 'result up= '.$up.' down= '.$down;
+            $predict[$key_not] = round(($up / $down), 3);
+            // echo ' predict= '.$predict[$key_not];
+        }
+        // echo "<pre>";print_r($predict);echo "</pre>";
+        
+        // sort by value desc - larger to smaller
+        arsort($predict);
+        return $predict;
     }
 
 }
