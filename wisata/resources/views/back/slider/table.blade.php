@@ -6,6 +6,7 @@
               @if(session('statut') == 'admin')
                 <td>{!! Form::checkbox('seen', $post->id, $post->seen) !!}</td>
               @endif
+              <td>{!! link_to('ads/' . $post->id, trans('back/blog.see'), ['class' => 'btn btn-success btn-block btn']) !!}</td>
               <td>{!! link_to_route('slider.edit', trans('back/blog.edit'), [$post->id], ['class' => 'btn btn-warning btn-block']) !!}</td>
               <td>
               {!! Form::open(['method' => 'DELETE', 'route' => ['slider.destroy', $post->id]]) !!}

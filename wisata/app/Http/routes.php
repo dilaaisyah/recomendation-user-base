@@ -41,6 +41,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::resource('slider', 'SliderController', [
 		'except' => ['show']
 	]);
+	Route::get('ads/{id}', 'SliderController@show');
+
 
 	Route::put('sliderseen/{id}', 'SliderController@updateSeen');
 	Route::put('slideractive/{id}', 'SliderController@updateActive');

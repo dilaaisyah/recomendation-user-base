@@ -3,6 +3,7 @@
 use App\Http\Requests\SliderRequest;
 use Illuminate\Http\Request;
 use App\Repositories\SliderRepository;
+use App\Repositories\BlogRepository;
 
 class SliderController extends Controller {
 
@@ -12,6 +13,13 @@ class SliderController extends Controller {
 	 * @var App\Repositories\SliderRepository
 	 */
 	protected $slider_gestion;
+	
+	/**
+	 * The BlogRepository instance.
+	 *
+	 * @var App\Repositories\BlogRepository
+	 */
+	protected $blog_gestion;
 
 	/**
 	 * Create a new SliderController instance.
@@ -20,9 +28,11 @@ class SliderController extends Controller {
 	 * @return void
 	 */
 	public function __construct(
-		SliderRepository $slider_gestion)
+		SliderRepository $slider_gestion,
+		BlogRepository $blog_gestion)
 	{
 		$this->slider_gestion = $slider_gestion;
+		$this->blog_gestion = $blog_gestion;
 
 		$this->middleware('admin', ['except' => ['store', 'update', 'destroy']]);
 		$this->middleware('ajax', ['only' => ['updateSeen', 'updateActive']]);
@@ -66,6 +76,18 @@ class SliderController extends Controller {
 
 		return redirect('slider')->with('ok', trans('back/blog.stored'));
 	}		
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$get_tags = $this->blog_gestion->get_tags();
+
+		return view('front.ads.show',  array_merge($this->slider_gestion->show($id), compact('get_tags')));
+	}
 
 	/**
 	 * Update "seen" in the specified resource in storage.

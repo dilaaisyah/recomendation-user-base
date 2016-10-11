@@ -33,6 +33,10 @@
                     </p>
                     
                     <div id="post-content">
+                        @if($post->thumbnail)
+                            <img src="{!! asset('filemanager/userfiles/thumbnail/'.$post->thumbnail) !!}" alt="{!! $post->title !!}" class="img-responsive">
+                            <br>  
+                        @endif    
 						{!! $post->content !!}                        
                     </div>
                     <!-- /#post-content -->

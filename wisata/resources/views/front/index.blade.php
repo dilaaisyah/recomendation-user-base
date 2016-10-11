@@ -13,6 +13,7 @@
                         <div class="row">
                             <div class="col-sm-5 right">                                
                                 {!! $ads->content !!}
+                                <a href="{!! url('ads/' . $ads->id) !!}" class="btn btn-template-transparent-primary" target="_blank">See More</a>
                             </div>
                             <div class="col-sm-7">
                                 @if($ads->thumbnail)
@@ -65,7 +66,7 @@
                                 <h4><a href="{!! url('blog/' . $post->slug) !!}">{{ $post->title }}</a></h4>
                                 <p class="author-category">By <span class="author">{{ $post->user->username }}</span> in <a href="{!! url('blogs/category?category='. $post->wisata_type ) !!}">{{ $post->wisata_type }}</a>
                                 </p>
-                                <div class="stars">
+                                <!-- <div class="stars">
                                     @if($post->vote)
                                         @for ($i = 1; $i <= 5; $i++)
                                             @if($post->vote == $i)
@@ -81,7 +82,7 @@
                                     @endif
                                     <span></span>
                                     {!! Form::token() !!}
-                                </div>
+                                </div> -->
                                 <p class="intro">{!! strip_tags($post->summary) !!}</p>
                                 <p class="read-more">
                                     {!! link_to('blog/' . $post->slug, 'Continue reading', ['class' => 'btn btn-template-main']) !!}

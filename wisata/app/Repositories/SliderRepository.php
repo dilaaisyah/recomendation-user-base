@@ -35,7 +35,7 @@ class SliderRepository extends BaseRepository {
         if (!$validator->fails()) {
             // checking file is valid.
             if ($input_image->isValid()) {
-              $destinationPath = 'filemanager\userfiles\slider'; // upload path
+              $destinationPath = 'filemanager/userfiles/slider'; // upload path
               $extension = $input_image->getClientOriginalExtension(); // getting image extension
               $fileName = rand(11111,99999).'.'.$extension; // renameing image
               $input_image->move($destinationPath, $fileName); // uploading file to given path
@@ -107,6 +107,18 @@ class SliderRepository extends BaseRepository {
                 ->orderBy($orderby, $direction);
 
         return $query->paginate($n);
+    }
+
+    /**
+     * Get post collection.
+     *
+     * @return array
+     */
+    public function show($id)
+    {
+        $post = $this->model->whereId($id)->firstOrFail();
+
+        return compact('post');
     }
 
     /**

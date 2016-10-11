@@ -11,7 +11,7 @@
 
 /*blog list*/
 .box-image-text .top{
-  height: 250px;
+  height: 225px;
   overflow: hidden;
 }
 .box-image-text .image {
@@ -22,8 +22,8 @@
 }
 .box-image-text .image img{ margin: 0 auto;}
 .box-image-text .author{ 
-  color: #38a7bb; 
-  font-weight: 500;
+	color: #38a7bb; 
+	font-weight: 500;
 }
 
 /*blog post*/
